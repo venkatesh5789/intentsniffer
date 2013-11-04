@@ -551,6 +551,7 @@ public class IntentSnifferMainActivity extends Activity {
 					newText.append("\n\n");
 
 					intent.putExtra("STORED_INTENTS_" + count, newText.toString());
+					intent.putExtra("STORED_INTENTS_DESCRIPTION_" + count, describeDetails(cur).toString());
 					count++;
 					newText.setLength(0);
 				}

@@ -29,25 +29,13 @@ public class ListOfIntents extends Activity {
 		Integer count = (Integer) i.getSerializableExtra("INTENTS_COUNT");
 		
 		final ArrayList<String> titles = new ArrayList<String>();
+		final ArrayList<String> descriptions = new ArrayList<String>();
 		
-		for(int j = 0; j<count ; j++)
+		for(int j = 0; j<count ; j++) {
 			titles.add((String) i.getSerializableExtra("STORED_INTENTS_"+j));
-		
-		//for (String stringKey : intents.keySet()) {
-			//titles.add(stringKey);
-		//}
-		
-//		TaskListDatabase tasksDb = new TaskListDatabase(getApplicationContext());
-//		tasksDb.open();
-//		values = tasksDb.getAllTasks();
-//		tasksDb.close();
-//		
-//		final ArrayList<String> titles = new ArrayList<String>();
-//		
-//		for(ViewTask view: values) {
-//			titles.add(view.getDescriptionString());
-//		}
-		
+			descriptions.add((String) i.getSerializableExtra("STORED_INTENTS_DESCRIPTION_"+j));
+		}
+			
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, titles);
 		listview.setAdapter(adapter);
@@ -56,7 +44,7 @@ public class ListOfIntents extends Activity {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-				String description = titles.get(position);
+				String description = descriptions.get(position);
 				Intent intent = new Intent(getApplicationContext(), IntentDetails.class);
 				intent.putExtra("intentDetails", description);
 				startActivity(intent);
