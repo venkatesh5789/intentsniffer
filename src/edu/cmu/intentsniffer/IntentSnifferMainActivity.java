@@ -4,11 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,7 +55,7 @@ public class IntentSnifferMainActivity extends Activity {
 	public Button mUpdateCat = null;
 	//	public CheckBox mShowRecent = null;
 	public CheckBox mShowBroadcasts = null;
-//	public CheckBox mShowDetails = null;
+	//	public CheckBox mShowDetails = null;
 
 	public boolean mDetails = false;
 	// list of every source we are outputing
@@ -67,7 +70,7 @@ public class IntentSnifferMainActivity extends Activity {
 			"com.android.mms.transaction.MESSAGE_SENT",
 			"android.intent.action.ANR", "android.intent.action.stk.command",
 			"android.intent.action.stk.session_end",
-			"com.android.im.SmsService.SMS_STATUS_RECEIVED" };
+	"com.android.im.SmsService.SMS_STATUS_RECEIVED" };
 
 	// classes that have broadcast actions, this list is incomplete (a start).
 	// These classes are not all visible to SDK, so loading them at runtime for
@@ -84,7 +87,7 @@ public class IntentSnifferMainActivity extends Activity {
 			"android.media.AudioManager", "android.net.wifi.WifiManager",
 			"android.telephony.TelephonyManager",
 			"android.appwidget.AppWidgetManager",
-			"android.net.ConnectivityManager" };
+	"android.net.ConnectivityManager" };
 
 	public String[] mKnownSchemes = { ContentResolver.SCHEME_ANDROID_RESOURCE,
 			ContentResolver.SCHEME_CONTENT, ContentResolver.SCHEME_FILE,
@@ -135,7 +138,7 @@ public class IntentSnifferMainActivity extends Activity {
 			initControls();
 		} catch (Throwable e) {
 			Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_LONG)
-					.show();
+			.show();
 			// mTextView.append(e.getMessage() );
 		}
 	}
@@ -145,9 +148,9 @@ public class IntentSnifferMainActivity extends Activity {
 		mUpdate = (Button) findViewById(R.id.updateView);
 		mUpdateAction = (Button) findViewById(R.id.updateAction);
 		mUpdateCat = (Button) findViewById(R.id.updateCat);
-	//	mShowRecent = (CheckBox) findViewById(R.id.recent);
+		//	mShowRecent = (CheckBox) findViewById(R.id.recent);
 		mShowBroadcasts = (CheckBox) findViewById(R.id.broadcasts);
-	//	mShowDetails = (CheckBox) findViewById(R.id.showDetails);
+		//	mShowDetails = (CheckBox) findViewById(R.id.showDetails);
 
 		loadKnownActions();
 		loadKnownCategories();
@@ -160,7 +163,7 @@ public class IntentSnifferMainActivity extends Activity {
 				updateView();
 			}
 		});
-		
+
 		mUpdateAction.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				updateKnownActions();
@@ -173,10 +176,10 @@ public class IntentSnifferMainActivity extends Activity {
 						+ " by walking manifest registrations."
 						: "No recent update.";
 				Toast.makeText( IntentSnifferMainActivity.this, s, Toast.LENGTH_LONG).show();
-				
+
 			}
 		});
-		
+
 		mUpdateCat.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				updateKnownCategories();
@@ -194,7 +197,7 @@ public class IntentSnifferMainActivity extends Activity {
 
 
 
-	/*	mShowRecent.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		/*	mShowRecent.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton c, boolean isChecked) {
 				if (isChecked) {
 					updateWithRecents();
@@ -207,29 +210,29 @@ public class IntentSnifferMainActivity extends Activity {
 		});*/
 
 		mShowBroadcasts
-				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-					public void onCheckedChanged(CompoundButton c,
-							boolean isChecked) {
-						registerBuddy(null, isChecked);
-						if (isChecked) {
-							mReporting.add(ACTION_ONLY_SOURCE);
-							mReporting.add(ACTION_AND_DATA_SOURCE);
-							mReporting.add(ACTION_AND_DATA_TYPE_SOURCE);
-							mReporting.add(WILD_ACTION_SOURCE);
-							mReporting.add(WILD_ACTION_AND_DATA_SOURCE);
+		.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			public void onCheckedChanged(CompoundButton c,
+					boolean isChecked) {
+				registerBuddy(null, isChecked);
+				if (isChecked) {
+					mReporting.add(ACTION_ONLY_SOURCE);
+					mReporting.add(ACTION_AND_DATA_SOURCE);
+					mReporting.add(ACTION_AND_DATA_TYPE_SOURCE);
+					mReporting.add(WILD_ACTION_SOURCE);
+					mReporting.add(WILD_ACTION_AND_DATA_SOURCE);
 
-						} else {
-							mReporting.remove(ACTION_ONLY_SOURCE);
-							mReporting.remove(ACTION_AND_DATA_SOURCE);
-							mReporting.remove(ACTION_AND_DATA_TYPE_SOURCE);
-							mReporting.remove(WILD_ACTION_SOURCE);
-							mReporting.remove(WILD_ACTION_AND_DATA_SOURCE);
-						}
-						updateView();
-					}
-				});
+				} else {
+					mReporting.remove(ACTION_ONLY_SOURCE);
+					mReporting.remove(ACTION_AND_DATA_SOURCE);
+					mReporting.remove(ACTION_AND_DATA_TYPE_SOURCE);
+					mReporting.remove(WILD_ACTION_SOURCE);
+					mReporting.remove(WILD_ACTION_AND_DATA_SOURCE);
+				}
+				updateView();
+			}
+		});
 
-	/*	mShowDetails.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		/*	mShowDetails.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton c, boolean isChecked) {
 				mDetails = isChecked;
 				updateView();
@@ -241,7 +244,7 @@ public class IntentSnifferMainActivity extends Activity {
 
 
 	// Menu handling
-	
+
 
 	protected boolean loadKnownActions() {
 		ArrayList<String> loaded = new ArrayList<String>();
@@ -522,9 +525,18 @@ public class IntentSnifferMainActivity extends Activity {
 	}
 
 	public void updateView() {
-		StringBuffer newText = new StringBuffer();
+		//		Intent i = new Intent(getApplicationContext(), ListOfIntents.class);
+		//		i.putExtra("STORED_INTENTS", mReceivedIntents);
+		//		startActivity(i);
+
+		//StringBuffer newText = new StringBuffer();
+		Intent intent = new Intent(getApplicationContext(), ListOfIntents.class);
+		int count = 0;
+
 		for (Entry<String, Collection<FilterComparison>> c : mReceivedIntents
 				.entrySet()) {
+
+			StringBuffer newText = new StringBuffer();
 			String s = c.getKey();
 			if (c.getValue() != null && mReporting.contains(s))
 				for (FilterComparison i : c.getValue()) {
@@ -537,9 +549,28 @@ public class IntentSnifferMainActivity extends Activity {
 					newText.append(" from ");
 					newText.append(s);
 					newText.append("\n\n");
+
+					intent.putExtra("STORED_INTENTS_" + count, newText.toString());
+					count++;
+					newText.setLength(0);
 				}
+			
+			intent.putExtra("INTENTS_COUNT", count);
+			startActivity(intent);		
+
+			//			Intent intent = new Intent(getApplicationContext(), ListOfIntents.class);
+			//			int i = 0;
+			////			intent.putExtra("STORED_INTENTS",(LinkedHashSet<FilterComparison>) mReceivedIntents.get(ACTION_AND_DATA_SOURCE));
+			//			Iterator<FilterComparison> iterator =  mReceivedIntents.get(ACTION_AND_DATA_SOURCE).iterator();
+			//			while(iterator.hasNext()) {
+			//				intent.putExtra("STORED_INTENTS"+ "_" + i, iterator.next().toString());
+			//				i++;
+			//			}
+			//			intent.putExtra("INTENTS_COUNT", i);
+			//			startActivity(intent);			
+
 		}
-		mTextView.setText(newText);
+		//mTextView.setText(newText);
 	}
 
 	protected StringBuffer describeDetails(Intent i) {
@@ -568,4 +599,10 @@ public class IntentSnifferMainActivity extends Activity {
 			}
 		return sb;
 	}
+
+	public HashMap<String, Collection<FilterComparison>> getmReceivedIntents() {
+		return mReceivedIntents;
+	}
+
+
 }
