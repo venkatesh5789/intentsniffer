@@ -238,36 +238,10 @@ public class IntentSnifferMainActivity extends Activity {
 	} // initControls
 
 	// Menu definition
-	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(Menu.NONE, 1, Menu.NONE, "Update Actions");
-		menu.add(Menu.NONE, 2, Menu.NONE, "Update Categories");
-		menu.add(Menu.NONE, 3, Menu.NONE, "Show Stats");
-		return true;
-	}
+
 
 	// Menu handling
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case 1:
-			updateKnownActions();
-			return true;
-		case 2:
-			updateKnownCategories();
-			return true;
-		case 3:
-			String s = mKnownBroadcastActions.length + " known actions, "
-					+ mKnownCategories.length + " categories, "
-					+ mKnownSchemes.length
-					+ " schemes. Type uses wild card to match all. ";
-			s += (mNumReflected != 0) ? "Found " + mNumReflected
-					+ " actions by reflection and " + mNumDug
-					+ " by walking manifest registrations."
-					: "No recent update.";
-			Toast.makeText(this, s, Toast.LENGTH_LONG).show();
-			return true;
-		}
-		return false;
-	}
+	
 
 	protected boolean loadKnownActions() {
 		ArrayList<String> loaded = new ArrayList<String>();
