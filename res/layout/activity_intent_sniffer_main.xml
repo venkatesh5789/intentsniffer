@@ -2,15 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
-	<Spinner android:id="@+id/activities" android:visibility="gone"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content">
-	</Spinner>
-	<Button android:id="@+id/startActivity" android:visibility="gone"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="Start Selected Activity">
-	</Button>
+
+
 	<LinearLayout android:orientation="horizontal"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content">
@@ -23,15 +16,19 @@
 	<LinearLayout android:orientation="horizontal"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content">
+		<Button android:id="@+id/updateAction"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="Update Actions">
+		</Button>
+		<Button android:id="@+id/updateCat"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="Update Categories">
+		</Button>
 		<Button android:id="@+id/updateView"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:text="Refresh	">
 		</Button>
-		<Button android:id="@+id/registerNull"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:text="Register"
-			android:visibility="gone">
-		</Button>
+
 	</LinearLayout>
 	<ScrollView android:layout_width="fill_parent"
 		android:layout_height="wrap_content">

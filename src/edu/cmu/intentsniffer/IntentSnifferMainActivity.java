@@ -48,10 +48,11 @@ public class IntentSnifferMainActivity extends Activity {
 	// controls
 	public TextView mTextView = null;
 	public Button mUpdate = null;
-	public Button mRegisterNull = null;
-	public CheckBox mShowRecent = null;
+	public Button mUpdateAction = null;
+	public Button mUpdateCat = null;
+	//	public CheckBox mShowRecent = null;
 	public CheckBox mShowBroadcasts = null;
-	public CheckBox mShowDetails = null;
+//	public CheckBox mShowDetails = null;
 
 	public boolean mDetails = false;
 	// list of every source we are outputing
@@ -142,7 +143,8 @@ public class IntentSnifferMainActivity extends Activity {
 	protected void initControls() {
 		mTextView = (TextView) findViewById(R.id.output);
 		mUpdate = (Button) findViewById(R.id.updateView);
-		mRegisterNull = (Button) findViewById(R.id.registerNull);
+		mUpdateAction = (Button) findViewById(R.id.updateAction);
+		mUpdateCat = (Button) findViewById(R.id.updateCat);
 	//	mShowRecent = (CheckBox) findViewById(R.id.recent);
 		mShowBroadcasts = (CheckBox) findViewById(R.id.broadcasts);
 	//	mShowDetails = (CheckBox) findViewById(R.id.showDetails);
@@ -158,12 +160,39 @@ public class IntentSnifferMainActivity extends Activity {
 				updateView();
 			}
 		});
-
-		mRegisterNull.setOnClickListener(new OnClickListener() {
+		
+		mUpdateAction.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				registerBuddy(null, true);
+				updateKnownActions();
+				String s = mKnownBroadcastActions.length + " known actions, "
+						+ mKnownCategories.length + " categories, "
+						+ mKnownSchemes.length
+						+ " schemes. Type uses wild card to match all. ";
+				s += (mNumReflected != 0) ? "Found " + mNumReflected
+						+ " actions by reflection and " + mNumDug
+						+ " by walking manifest registrations."
+						: "No recent update.";
+				Toast.makeText( IntentSnifferMainActivity.this, s, Toast.LENGTH_LONG).show();
+				
 			}
 		});
+		
+		mUpdateCat.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				updateKnownCategories();
+				String s = mKnownBroadcastActions.length + " known actions, "
+						+ mKnownCategories.length + " categories, "
+						+ mKnownSchemes.length
+						+ " schemes. Type uses wild card to match all. ";
+				s += (mNumReflected != 0) ? "Found " + mNumReflected
+						+ " actions by reflection and " + mNumDug
+						+ " by walking manifest registrations."
+						: "No recent update.";
+				Toast.makeText( IntentSnifferMainActivity.this, s, Toast.LENGTH_LONG).show();
+			}
+		});
+
+
 
 	/*	mShowRecent.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton c, boolean isChecked) {
