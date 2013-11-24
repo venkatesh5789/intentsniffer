@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.Intent.FilterComparison;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,13 +27,22 @@ public class ListOfIntents extends Activity {
 		final ListView listview = (ListView) findViewById(R.id.listOfIntents);
 		
 		Intent i = getIntent();
+		
 		Integer count = (Integer) i.getSerializableExtra("INTENTS_COUNT");
 		
 		final ArrayList<String> titles = new ArrayList<String>();
 		final ArrayList<String> descriptions = new ArrayList<String>();
 		
 		for(int j = 0; j<count ; j++) {
-			titles.add((String) i.getSerializableExtra("STORED_INTENTS_"+j));
+			
+			String comp = (String) i.getSerializableExtra("STORED_INTENTS_"+j);
+			
+			String act = comp.substring(comp.indexOf("act")+4, comp.indexOf("flg"));
+			String flg = comp.substring(comp.indexOf("flg")+4,comp.indexOf("("));
+			
+			String toUse = "Intent: \n"+ "Action: "+act+"\nFlag: "+flg;
+			Log.e("RUCHIR","##########"+flg);
+			titles.add(toUse);
 			descriptions.add((String) i.getSerializableExtra("STORED_INTENTS_DESCRIPTION_"+j));
 		}
 			

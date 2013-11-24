@@ -17,9 +17,11 @@ public class IntentDetails extends Activity {
 		mTextView = (TextView) findViewById(R.id.intentContents);
 
 		Intent i = getIntent();
+		
 		String description = (String) i.getSerializableExtra("intentDetails");
-
-		mTextView.setText(description);
+		String temp = description.replace("{","").replace("}", "");
+		String temp2 = temp.replace(" ","\n");
+		mTextView.setText(temp2);
 
 	}
 
