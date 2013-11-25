@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -450,10 +452,14 @@ public class IntentSnifferMainActivity extends Activity {
 	 * @param i
 	 */
 	public void receiveIntent(String receiverName, Intent i) {
-		Collection<FilterComparison> l = mReceivedIntents.get(receiverName);
+		String secs = " " + System.currentTimeMillis();
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm"); 
+		Date resultdate = new Date(System.currentTimeMillis());
+		secs = sdf.format(resultdate).toString();
+		Collection<FilterComparison> l = mReceivedIntents.get(secs);
 		if (null == l) {
 			l = new LinkedHashSet<FilterComparison>();
-			mReceivedIntents.put(receiverName, l);
+			mReceivedIntents.put(secs, l);
 		}
 		l.add(new FilterComparison(i));
 	}
@@ -538,17 +544,19 @@ public class IntentSnifferMainActivity extends Activity {
 
 			StringBuffer newText = new StringBuffer();
 			String s = c.getKey();
-			if (c.getValue() != null && mReporting.contains(s))
+			if (c.getValue() != null)
 				for (FilterComparison i : c.getValue()) {
 					Intent cur = i.getIntent();
+					//newText.append(" at Time - ");
+					//newText.append(s);
 					newText.append(cur.toString());
 					if (cur.hasFileDescriptors())
 						newText.append(" Contains file descriptor ");
 					if (mDetails)
 						newText.append(describeDetails(cur));
-					newText.append(" from ");
+					newText.append("Time - ");
 					newText.append(s);
-					newText.append("\n\n");
+					newText.append("\n");
 
 					intent.putExtra("STORED_INTENTS_" + count, newText.toString());
 					intent.putExtra("STORED_INTENTS_DESCRIPTION_" + count, describeDetails(cur).toString());
