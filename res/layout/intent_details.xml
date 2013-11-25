@@ -8,14 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".IntentDetails" >
 
-    <TextView
-        android:id="@+id/intentContents"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="42dp"
-        android:layout_marginTop="107dp" />
+
 
     <TextView
         android:id="@+id/intentTitle"
@@ -23,8 +16,20 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView1"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="48dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="44dp"
-        android:text="@string/intent_details" />
+        android:text="@string/intent_details"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/intentTitle"
+        android:layout_marginTop="35dp" >
+
+    </ListView>
 
 </RelativeLayout>

@@ -6,6 +6,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_list_of_intents">ListOfIntents</string>
     <string name="title_activity_intent_details">IntentDetails</string>
-    <string name="intent_details">Intent Details</string>
+    <string name="intent_details">Extras:</string>
 
 </resources>
