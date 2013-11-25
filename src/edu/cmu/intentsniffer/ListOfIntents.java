@@ -36,11 +36,11 @@ public class ListOfIntents extends Activity {
 		for(int j = 0; j<count ; j++) {
 			
 			String comp = (String) i.getSerializableExtra("STORED_INTENTS_"+j);
-			
+			String time = comp.substring(comp.indexOf("Time - "));
 			String act = comp.substring(comp.indexOf("act")+4, comp.indexOf("flg"));
 			String flg = comp.substring(comp.indexOf("flg")+4,comp.indexOf("("));
 			
-			String toUse = "Intent: \n"+ "Action: "+act+"\nFlag: "+flg;
+			String toUse = "Intent: \n" + time  + "Action: "+act+"\nFlag: "+flg;
 			Log.e("RUCHIR","##########"+flg);
 			titles.add(toUse);
 			descriptions.add((String) i.getSerializableExtra("STORED_INTENTS_DESCRIPTION_"+j));
