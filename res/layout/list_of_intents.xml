@@ -11,9 +11,18 @@
     <ListView
         android:id="@+id/listOfIntents"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" >
+        android:layout_below="@+id/Report" >
+
     </ListView>
+
+    <Button
+        android:id="@+id/Report"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/listOfIntents"
+        android:text="@string/report" />
 
 </RelativeLayout>

@@ -8,5 +8,6 @@
     <string name="title_activity_intent_details">IntentDetails</string>
     <string name="intent_details">Extras:</string>
     <string name="search_title">Search</string>
+    <string name="report">Generate Report</string>
 
 </resources>
