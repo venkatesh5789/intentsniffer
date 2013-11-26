@@ -86,7 +86,14 @@ public class ListOfIntents extends Activity {
 					if(!root.exists()){
 						root.mkdirs();
 					}
+					int counter = 0;
 					File report = new File(root,"report.txt");
+					//to prevent generating reports with the same name or to append
+					//to an already existing report with the same name
+					while(report.exists()){
+						report = new File(root, "report" + counter + ".txt");
+						counter++;
+					}
 					try {
 						FileWriter writer = new FileWriter(report);
 						for(int i = 0; i < titles.size(); i++){
